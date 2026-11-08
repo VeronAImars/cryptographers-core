@@ -18,26 +18,26 @@ updated: 2026-11-07
 updated_by: veronaimars
 phases:
   - id: M0
-    title: Walking skeleton — one man page by tag, indexed and diffed; one check in a pinned container
+    title: Walking skeleton — one man page by tag, indexed and diffed; one check in a pinned container; the host probed (design §7)
     status: todo
     depends_on: []
     subphases:
       - id: M0.0
-        title: Spike — copy one man page by tag, index it, run one check in a container
+        title: Spike — copy one man page by tag, index it, run one check in a container (design §3)
         status: todo
         deliverables:
           - id: M0.0-d1
             done: false
             desc: docs/findings-m0.md records the POD-to-index shape, container build time, and the check output contract
       - id: M0.1
-        title: Release images
+        title: Release images (design §3 Images)
         status: todo
         deliverables:
           - id: M0.1-d1
             done: false
             desc: images/openssl-3.5 and images/openssl-4.1 build from the tagged OpenSSL source; `openssl version` inside each prints the pinned release
       - id: M0.2
-        title: Corpus and diff for one command
+        title: Corpus and diff for one command (design §5.1, §5.2)
         status: todo
         deliverables:
           - id: M0.2-d1
@@ -47,7 +47,7 @@ phases:
             done: false
             desc: "`cryptocore corpus diff 3.5 4.1 openssl-verify` lists added and removed options"
       - id: M0.3
-        title: One check in a container
+        title: One check in a container (design §5.3, §5.4)
         status: todo
         deliverables:
           - id: M0.3-d1
@@ -59,10 +59,17 @@ phases:
             check: fresh clone → build the two images → `cryptocore corpus build` → `cryptocore check run rules/correctness/chain.yaml` on a fixture with root, intermediate and leaf exits 0 → remove the intermediate → exits non-zero naming the failed check and the cited section
             method: e2e
       - id: M0.4
-        title: gate
+        title: The host probe (design §4)
         status: todo
         deliverables:
           - id: M0.4-d1
+            done: false
+            desc: "`cryptocore host probe` prints the stack identity JSON of design §4 on this Mac (LibreSSL at /usr/bin, OpenSSL from Homebrew, Python, Node, curl each read the way they report it) and on a Linux CI runner; mismatches are listed as facts"
+      - id: M0.5
+        title: gate
+        status: todo
+        deliverables:
+          - id: M0.5-d1
             done: false
             desc: hack/acceptance/m0.sh replaces the skeleton; phases.json flips skeleton to false in the same change
   - id: M1
@@ -71,7 +78,7 @@ phases:
     depends_on: [M0]
     subphases:
       - id: M1.1
-        title: man1, man5, man7 for every supported release; -help captured
+        title: man1, man5, man7 for every supported release; -help captured (design §5.1)
         status: todo
         deliverables:
           - id: M1.1-d1
@@ -93,7 +100,7 @@ phases:
     depends_on: [M1]
     subphases:
       - id: M2.1
-        title: pkg/corpus, pkg/check, pkg/sandbox
+        title: pkg/corpus, pkg/check, pkg/sandbox (design §3 Components)
         status: todo
         deliverables:
           - id: M2.1-d1
@@ -111,7 +118,7 @@ phases:
 ## Mirror
 
 - **M0** proves the whole loop once: pinned OpenSSL in a container, a manual copied by tag and
-  indexed, a diff between two releases, one check that reads real artifacts.
+  indexed, a diff between two releases, one check that reads real artifacts, and the host probed.
 - **M1** widens the copy to every supported release and every page, and makes change visible every
   night.
 - **M2** turns the CLI into a library the workshop and the terminal import, with checks as files.

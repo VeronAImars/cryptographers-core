@@ -11,7 +11,7 @@ release image. Products import the packages; nothing here draws a screen.
 ## v0.1 — the three answers for one command
 
 - M0 walking skeleton: two release images, the corpus and diff for one command, one check run in a
-  container, all from a fresh clone
+  container, the host probed, all from a fresh clone
 - M1 the whole corpus: man1, man5 and man7 for every supported release, each binary's `-help`
   captured, the index rebuilt nightly and published as a release asset
 - M2 checks as files and a stable API: `pkg/corpus`, `pkg/check`, `pkg/sandbox` the products

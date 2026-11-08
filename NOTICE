@@ -1,0 +1,10 @@
+the cryptographer's core
+Copyright The cryptographers-core Authors.
+
+Licensed under the Apache License, Version 2.0 (see the LICENSE file).
+
+Third-party dependencies are obtained through the language's module system; no vendored
+third-party source is checked in. Their notices and licence texts are bundled with released
+binaries.
+
+OpenSSL documentation copied under corpus/: see THIRD_PARTY.md.

@@ -1,0 +1,17 @@
+name: check
+on: [push, pull_request]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - run: gofmt -l . && go vet ./... && go build ./...
+      - run: hack/check.sh
+      - name: gates (skeletons stay red)
+        run: |
+          for s in hack/acceptance/m*.sh; do
+            if sh "$s"; then echo "$s skeleton exited 0" >&2; exit 1; fi
+          done

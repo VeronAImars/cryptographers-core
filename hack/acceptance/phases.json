@@ -1,0 +1,9 @@
+{
+  "schema": "acceptance/v1",
+  "note": "One gate per phase. exit 0 = met. A skeleton gate always exits 1 until the phase's gate sub-phase replaces it.",
+  "gates": {
+    "M0": { "script": "hack/acceptance/m0.sh", "tier": "e2e", "requires": [], "manual": false, "skeleton": true },
+    "M1": { "script": "hack/acceptance/m1.sh", "tier": "e2e", "requires": ["M0"], "manual": false, "skeleton": true },
+    "M2": { "script": "hack/acceptance/m2.sh", "tier": "e2e", "requires": ["M1"], "manual": false, "skeleton": true }
+  }
+}

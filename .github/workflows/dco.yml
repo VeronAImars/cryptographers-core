@@ -1,0 +1,30 @@
+# Every commit in a pull request must carry a Signed-off-by line matching its author (see /DCO).
+# Read-only token; pull_request trigger, never pull_request_target.
+name: DCO
+on:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  dco:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify Signed-off-by
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -eu
+          fail=0
+          for sha in $(git rev-list --no-merges "$BASE..$HEAD"); do
+            email="$(git show -s --format='%ae' "$sha")"
+            if ! git show -s --format='%B' "$sha" | grep -iE '^Signed-off-by: ' | grep -qiF "<${email}>"; then
+              echo "::error::commit ${sha} is not signed off by its author ($(git show -s --format='%an <%ae>' "$sha")). Run: git commit -s --amend"
+              fail=1
+            fi
+          done
+          [ "$fail" -eq 0 ] && echo "All commits are signed off."
+          exit $fail

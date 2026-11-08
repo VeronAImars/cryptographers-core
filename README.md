@@ -21,6 +21,30 @@ Two products call it: [openssl-workshop](https://github.com/veronaimars/openssl-
 (inspection for people operating). The core does not know which one is calling and has no user
 interface of its own beyond a CLI for building and testing.
 
+## A look (mockup of the M0 target)
+
+```text
+$ cryptocore corpus diff 3.0 4.1 openssl-req
+openssl-req(1)   openssl-3.0.18 → openssl-4.1.0
+  + -not_before <date>      OPTIONS
+  + -not_after <date>       OPTIONS
+  + -cipher <name>          OPTIONS
+  + -quiet                  OPTIONS
+  + -x509v1                 OPTIONS
+  - -keygen_engine <id>     OPTIONS   (ENGINE support removed)
+  ~ -newkey <arg>           OPTIONS   text changed, 12 lines
+
+$ cryptocore check run rules/correctness/chain.yaml --version 4.1 ./certs
+[openssl 4.1.0] correctness/chain
+  ✘ openssl verify -CAfile root.pem -untrusted int.pem leaf.pem
+      int.pem: no such file in ./certs
+      cites openssl-verify(1) OPTIONS -untrusted
+  –  openssl verify -CAfile root.pem leaf.pem   (skipped: inputs incomplete)
+1 check failed, 1 skipped. exit 1
+```
+
+Every line above is either a copy of OpenSSL's own words or a pointer to the section it came from.
+
 ## Why
 
 OpenSSL keeps its documentation current and changes it often; material built on top goes stale
